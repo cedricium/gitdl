@@ -56,6 +56,20 @@ locally:
 
 <!-- TODO: explain pros/cons of each approach, why landed on 3 -->
 
+### Limitations/Assumptions
+
+To keep the API for this program simple initially, some assumptions were made,
+which might be limitations for some users. Those are listed below but requests
+or contributions to amend these are welcome (possible changes noted in
+parenthesis):
+
+- GitHub is the only supported git host (_`-h, -host` option for e.g. BitBucket,
+  GitLab, etc._)
+- when checking out the git repository, the default branch/HEAD ref is used
+  (_`-b, -branch` option_)
+- public access is required to the repository (_auth mechanism, e.g. token,
+  user/password, ssh key_)
+
 ## License
 
 [MIT License](LICENSE.md)

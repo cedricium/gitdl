@@ -14,6 +14,12 @@ The process (read: happy path) for fetching git blobs (files) and trees
  4. SOURCE object(s) are extracted and written to temporary directory using `git checkout`
  5. target's SOURCE files/directories copied to specified DEST_DIR
  6. temporary directory cleaned up/removed
+
+Refer to git's [`sparse-checkout` documentation] and this [GitHub blog post] for
+more information on the performance impact of the commands used.
+
+[`sparse-checkout` documentation]: https://git-scm.com/docs/git-sparse-checkout#Documentation/git-sparse-checkout.txt
+[GitHub blog post]: https://github.blog/2020-01-17-bring-your-monorepo-down-to-size-with-sparse-checkout/
 */
 package main
 
