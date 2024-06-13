@@ -18,7 +18,6 @@ func download(do DownloadOptions) error {
 	if err != nil {
 		return err
 	}
-
 	if !fi.IsDir() {
 		// TODO: should we set default DEST_DIR to CWD here?
 		err = fmt.Errorf("%s is not a directory", do.destdir)
@@ -51,8 +50,9 @@ func download(do DownloadOptions) error {
 	}
 
 	for _, s := range do.source {
+		_, ford := filepath.Split(s)
 		src := filepath.Join(tmpdir, s)
-		dst := filepath.Join(do.destdir, s)
+		dst := filepath.Join(do.destdir, ford)
 		if err = os.Rename(src, dst); err != nil {
 			fmt.Printf("gitdl: %v\n", err)
 			continue
