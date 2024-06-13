@@ -19,18 +19,12 @@ for this project.
 ## Description
 
 ```
-gitdl [OPTIONS]… REPO SOURCE [DEST_DIR]
+gitdl REPO SOURCE[…] DEST_DIR
 ```
 
 - `REPO`: short GitHub path `<owner>/<repo>` (e.g. `cedricium/gitdl`)
-- `SOURCE`: file(s) and/or director(y|ies) to download using a single string
-  glob pattern
-- `DEST_DIR`: local target destination directory where SOURCE args are copied
-  to, default `.` or CWD
-
-## Options
-
-<!-- TODO -->
+- `SOURCE`: file(s) and/or director(y|ies) from REPO wanting to download
+- `DEST_DIR`: local destination directory where SOURCE args are copied to
 
 ## Examples
 
