@@ -24,11 +24,12 @@ more information on the performance impact of the commands used.
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 )
 
-const usage string = `gitdl v0.0.1
+const usage string = `gitdl v0.0.3
 Download files and directories locally from a remote git repository.
 
 USAGE:
@@ -41,19 +42,46 @@ ARGUMENTS:
 `
 
 func main() {
-	var source []string
-	var repo, destdir string
-
-	if len(os.Args) < 3 {
-		fmt.Print(usage)
+	config, err := ParseArgs(os.Args[1:])
+	if err != nil {
+		if errors.Is(err, ErrTooFewArguments) {
+			fmt.Print(usage)
+		} else {
+			fmt.Printf("gitdl: %v\n", err)
+		}
 		os.Exit(1)
 	}
 
-	source = os.Args[2 : len(os.Args)-1]
-	repo, destdir = os.Args[1], os.Args[len(os.Args)-1]
+	fm := FileManager{DestDir: config.DestDir}
+	if err := fm.ValidateDestDir(); err != nil {
+		fmt.Printf("gitdl: %v\n", err)
+		os.Exit(1)
+	}
+	tempDir, err := fm.CreateTempDir()
+	if err != nil {
+		fmt.Printf("gitdl: %v\n", err)
+		os.Exit(1)
+	}
+	defer os.RemoveAll(tempDir)
 
-	do := DownloadOptions{repo: repo, source: source, destdir: destdir}
-	if err := download(do); err != nil {
+	git := Git{
+		RepoURL: "https://github.com/" + config.Repo + ".git",
+		TempDir: tempDir,
+	}
+	if err := git.Clone(); err != nil {
+		fmt.Printf("gitdl: %v\n", err)
+		os.Exit(1)
+	}
+	if err := git.SparseCheckout(config.Sources); err != nil {
+		fmt.Printf("gitdl: %v\n", err)
+		os.Exit(1)
+	}
+	if err := git.Checkout(); err != nil {
+		fmt.Printf("gitdl: %v\n", err)
+		os.Exit(1)
+	}
+
+	if err := fm.MoveFiles(config.Sources, tempDir); err != nil {
 		fmt.Printf("gitdl: %v\n", err)
 		os.Exit(1)
 	}
