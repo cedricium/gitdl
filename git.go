@@ -16,7 +16,7 @@ func (g *Git) Clone() error {
 }
 
 func (g *Git) SparseCheckout(sources []string) error {
-	args := append([]string{"sparse-checkout", "set", "--no-cache"}, sources...)
+	args := append([]string{"sparse-checkout", "set", "--no-cone"}, sources...)
 	cmd := exec.Command("git", args...)
 	cmd.Dir = g.TempDir
 	if err := cmd.Run(); err != nil {
