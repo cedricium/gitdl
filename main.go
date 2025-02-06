@@ -29,7 +29,7 @@ import (
 	"os"
 )
 
-const usage string = `gitdl v0.0.3
+const usage string = `gitdl v0.1.0
 Download files and directories locally from a remote git repository.
 
 USAGE:
